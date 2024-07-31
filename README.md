@@ -1,4 +1,4 @@
-# hydroinator
+# Hydroinator
 
 A new Flutter project.
 
