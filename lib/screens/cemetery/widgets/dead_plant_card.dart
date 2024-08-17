@@ -35,7 +35,7 @@ class DeadPlantCard extends StatelessWidget {
                     style: AppTypography.defaultStyle,
                   ),
                   Text(
-                    "zm. ${AppConfig.defaultDateFormat.format(plant.addDate)}",
+                    "zm. ${AppConfig.defaultDateFormat.format(plant.deathDate ?? DateTime.now())}",
                     style: AppTypography.defaultStyle,
                   )
                 ],

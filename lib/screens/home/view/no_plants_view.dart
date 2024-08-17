@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hydroinator/config/app_strings.dart';
 import 'package:hydroinator/config/app_typography.dart';
+import 'package:hydroinator/screens/cemetery/cemetery_screen.dart';
 import 'package:hydroinator/screens/home/widgets/add_floating_button.dart';
 import 'package:hydroinator/widgets/custom_app_bar.dart';
 
@@ -13,6 +14,8 @@ class NoPlantsView extends StatelessWidget {
       appBar: CustomAppBar(
         showBackButton: false,
         title: AppStrings.collection,
+        showActions: true,
+        onAction: () => Navigator.pushNamed(context, CemeteryScreen.route),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
