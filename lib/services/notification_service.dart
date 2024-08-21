@@ -39,17 +39,19 @@ class NotificationService {
   Future<void> scheduleNotifications(List<PlantEntity> plants) async {
     await Workmanager().cancelAll();
     for (var plant in plants) {
-      Workmanager().registerPeriodicTask(
-        'water_plant_${plant.id}',
-        'waterPlantTask',
-        initialDelay:
-            _calculateInitialDelay(plant.startDate, plant.dayInterval),
-        frequency: Duration(days: plant.dayInterval),
-        inputData: {
-          'plantName': plant.name,
-          'interval': plant.dayInterval,
-        },
-      );
+      if (plant.isAlive) {
+        Workmanager().registerPeriodicTask(
+          'water_plant_${plant.id}',
+          'waterPlantTask',
+          initialDelay:
+              _calculateInitialDelay(plant.startDate, plant.dayInterval),
+          frequency: Duration(days: plant.dayInterval),
+          inputData: {
+            'plantName': plant.name,
+            'interval': plant.dayInterval,
+          },
+        );
+      }
     }
   }
 
