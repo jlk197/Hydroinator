@@ -30,8 +30,8 @@ class _AddPlantScreenState extends State<AddPlantScreen> {
     var mRoute = ModalRoute.of(context);
     if (mRoute != null) {
       var args = mRoute.settings.arguments;
-      if (args != null && args is List) {
-        plant = args[0] as PlantEntity;
+      if (args != null && args is PlantEntity) {
+        plant = args;
         isEdited = true;
       }
     }

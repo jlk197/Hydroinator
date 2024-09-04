@@ -31,7 +31,7 @@ class PlantEntity {
   factory PlantEntity.empty() {
     return PlantEntity(
       addDate: DateTime.now(),
-      dayInterval: 0,
+      dayInterval: 1,
       imagesFiles: [],
       isAlive: true,
       name: "",
