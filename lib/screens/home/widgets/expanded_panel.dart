@@ -41,7 +41,7 @@ class ExpandedPanel extends StatelessWidget {
                         text: AppStrings.edit,
                         onClick: () {
                           Navigator.pushNamed(context, AddPlantScreen.route,
-                              arguments: [plant.toPlantEntity()]);
+                              arguments: plant.toPlantEntity());
                         },
                       ),
                       MyIconButton(

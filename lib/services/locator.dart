@@ -12,6 +12,7 @@ void setupLocator() {
   locator.registerLazySingleton<DatabaseService>(() => DatabaseService());
   locator.registerLazySingleton<HomeBloc>(() => HomeBloc(
         databaseService: locator.get<DatabaseService>(),
+        notificationService: locator.get<NotificationService>(),
       ));
 
   locatorInitialized = true;

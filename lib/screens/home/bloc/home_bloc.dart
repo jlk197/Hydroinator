@@ -4,14 +4,17 @@ import 'package:hydroinator/models/entities/image_entity.dart';
 import 'package:hydroinator/models/entities/plant_entity.dart';
 import 'package:hydroinator/models/plant.dart';
 import 'package:hydroinator/services/database_service.dart';
+import 'package:hydroinator/services/notification_service.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final DatabaseService databaseService;
+  final NotificationService notificationService;
 
-  HomeBloc({required this.databaseService}) : super(const HomeState()) {
+  HomeBloc({required this.databaseService, required this.notificationService})
+      : super(const HomeState()) {
     on<InitDataEvent>(_initData);
     on<AddPhotoEvent>(_addPhoto);
     on<AssignAsDeadEvent>(_assignAsDead);
@@ -51,6 +54,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     var dbPlants = await databaseService.getAlivePlants();
     List<Plant> plants = dbPlants.map((e) => e.toPlant()).toList();
+
+    await notificationService.scheduleNotifications(dbPlants);
     emitter(state.copyWith(plants: plants, state: HomeLoadingState.loaded));
   }
 }
