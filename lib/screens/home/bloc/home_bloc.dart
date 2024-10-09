@@ -34,7 +34,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         state.plants.firstWhere((element) => element.id == event.plantId);
     updatedPlant.imagesFiles = [
       ...updatedPlant.imagesFiles,
-      ImageEntity(image: event.photo)
+      ImageEntity(image: event.photo, dateTime: DateTime.now())
     ];
     await databaseService.updatePlant(updatedPlant.toPlantEntity());
 

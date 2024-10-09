@@ -71,7 +71,9 @@ class _AddPlantScreenState extends State<AddPlantScreen> {
                       images: plant.imagesFiles,
                       onChanged: (img) {
                         setState(() {
-                          plant.imagesFiles = [ImageEntity(image: img)];
+                          plant.imagesFiles = [
+                            ImageEntity(image: img, dateTime: DateTime.now())
+                          ];
                         });
                       },
                     ),

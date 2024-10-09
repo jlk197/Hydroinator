@@ -4,7 +4,7 @@ part 'image_entity.g.dart';
 
 @embedded
 class ImageEntity {
-  DateTime? dateTime = DateTime.now();
+  DateTime? dateTime;
   String image;
   ImageEntity({this.image = "", this.dateTime});
 }
