@@ -24,6 +24,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       InitDataEvent event, Emitter<HomeState> emitter) async {
     var dbPlants = await databaseService.getAlivePlants();
     List<Plant> plants = dbPlants.map((e) => e.toPlant()).toList();
+    plants.sort((a, b) {
+      var firstWatering = int.tryParse(a.nextWatering.split(" ")[1]) ?? 0;
+      var secondWatering = int.tryParse(b.nextWatering.split(" ")[1]) ?? 0;
+      return firstWatering.compareTo(secondWatering);
+    });
     emitter(state.copyWith(plants: plants, state: HomeLoadingState.loaded));
   }
 
@@ -40,6 +45,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     var dbPlants = await databaseService.getAlivePlants();
     List<Plant> plants = dbPlants.map((e) => e.toPlant()).toList();
+    plants.sort((a, b) {
+      var firstWatering = int.tryParse(a.nextWatering.split(" ")[1]) ?? 0;
+      var secondWatering = int.tryParse(b.nextWatering.split(" ")[1]) ?? 0;
+      return firstWatering.compareTo(secondWatering);
+    });
     emitter(state.copyWith(plants: plants, state: HomeLoadingState.loaded));
   }
 
@@ -54,7 +64,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     var dbPlants = await databaseService.getAlivePlants();
     List<Plant> plants = dbPlants.map((e) => e.toPlant()).toList();
-
+    plants.sort((a, b) {
+      var firstWatering = int.tryParse(a.nextWatering.split(" ")[1]) ?? 0;
+      var secondWatering = int.tryParse(b.nextWatering.split(" ")[1]) ?? 0;
+      return firstWatering.compareTo(secondWatering);
+    });
     await notificationService.scheduleNotifications(dbPlants);
     emitter(state.copyWith(plants: plants, state: HomeLoadingState.loaded));
   }
