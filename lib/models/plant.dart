@@ -29,6 +29,16 @@ class Plant {
     required this.dayIntervalString,
     required this.nextWatering,
   });
+
+  int getNextWatering() {
+    if (nextWatering == "dzisiaj") {
+      return 0;
+    } else if (nextWatering == "jutro") {
+      return 1;
+    } else {
+      return int.tryParse(nextWatering.split(" ")[1]) ?? 0;
+    }
+  }
 }
 
 extension PlantEntityExtension on Plant {
