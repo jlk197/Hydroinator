@@ -23,6 +23,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Future<void> _initData(
       InitDataEvent event, Emitter<HomeState> emitter) async {
     var dbPlants = await databaseService.getAlivePlants();
+    await notificationService.scheduleNotifications(dbPlants);
     List<Plant> plants = dbPlants.map((e) => e.toPlant()).toList();
     plants.sort((a, b) => a.getNextWatering().compareTo(b.getNextWatering()));
     emitter(state.copyWith(plants: plants, state: HomeLoadingState.loaded));

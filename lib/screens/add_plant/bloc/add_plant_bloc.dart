@@ -18,8 +18,9 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
 
   void _onAddPlant(AddPlant event, Emitter<AddPlantState> emit) async {
     emit(state.copyWith(plantAddingState: PlantAddingState.adding));
-    var addedPlant = await databaseService.addPlant(event.plant);
-    await notificationService.addNotification(addedPlant);
+    await databaseService.addPlant(event.plant);
+    var dbPlants = await databaseService.getAlivePlants();
+    await notificationService.scheduleNotifications(dbPlants);
     emit(state.copyWith(plantAddingState: PlantAddingState.added));
   }
 }
