@@ -43,15 +43,14 @@ class _AddPlantScreenState extends State<AddPlantScreen> {
     return BlocConsumer<AddPlantBloc, AddPlantState>(
       listener: (context, state) {
         if (state.plantAddingState == PlantAddingState.added) {
+          Navigator.pop(context);
           Navigator.popUntil(context, (route) => false);
           Navigator.pushNamed(context, HomeScreen.route);
         } else if (state.plantAddingState == PlantAddingState.adding) {
           showDialog(
             context: context,
-            builder: (context) => const Dialog(
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
+            builder: (context) => const Center(
+              child: CircularProgressIndicator(),
             ),
           );
         }
