@@ -23,10 +23,11 @@ class _HomeScreenState extends State<HomeScreen> {
             return const HomeLoadingView();
           case HomeLoadingState.loaded:
             if (state.plants.isEmpty) {
-              return const NoPlantsView();
+              return NoPlantsView(timeOfDay: state.notificationTime);
             }
             return HomeLoadedView(
               plants: state.plants,
+              timeOfDay: state.notificationTime,
             );
         }
       },

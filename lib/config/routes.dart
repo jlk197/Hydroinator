@@ -6,7 +6,8 @@ import 'package:hydroinator/screens/cemetery/bloc/cemetery_bloc.dart';
 import 'package:hydroinator/screens/cemetery/cemetery_screen.dart';
 import 'package:hydroinator/screens/home/bloc/home_bloc.dart';
 import 'package:hydroinator/screens/home/home_screen.dart';
-import 'package:hydroinator/services/database_service.dart';
+import 'package:hydroinator/services/db/plant_db.dart';
+import 'package:hydroinator/services/db/user_settings_db.dart';
 import 'package:hydroinator/services/locator.dart';
 import 'package:hydroinator/services/notification_service.dart';
 
@@ -17,14 +18,15 @@ Map<String, Widget Function(BuildContext)> routes = {
       ),
   AddPlantScreen.route: (ctx) => BlocProvider(
         create: (context) => AddPlantBloc(
-          databaseService: locator.get<DatabaseService>(),
+          databaseService: locator.get<PlantDb>(),
+          userSettingsDb: locator.get<UserSettingsDb>(),
           notificationService: locator.get<NotificationService>(),
         ),
         child: const AddPlantScreen(),
       ),
   CemeteryScreen.route: (ctx) => BlocProvider(
         create: (context) => CemeteryBloc(
-          databaseService: locator.get<DatabaseService>(),
+          databaseService: locator.get<PlantDb>(),
         )..add(LoadCemeteryEvent()),
         child: const CemeteryScreen(),
       ),

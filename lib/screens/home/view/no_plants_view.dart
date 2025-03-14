@@ -6,7 +6,8 @@ import 'package:hydroinator/screens/home/widgets/add_floating_button.dart';
 import 'package:hydroinator/widgets/custom_app_bar.dart';
 
 class NoPlantsView extends StatelessWidget {
-  const NoPlantsView({super.key});
+  final TimeOfDay timeOfDay;
+  const NoPlantsView({super.key, required this.timeOfDay});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,7 @@ class NoPlantsView extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: const AddFloatingButton(),
+      floatingActionButton: AddFloatingButton(timeOfDay: timeOfDay),
     );
   }
 }

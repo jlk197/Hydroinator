@@ -19,3 +19,8 @@ class AssignAsDeadEvent extends HomeEvent {
   final int plantId;
   const AssignAsDeadEvent(this.plantId);
 }
+
+class ChangeNotificationsTimeEvent extends HomeEvent {
+  final TimeOfDay time;
+  const ChangeNotificationsTimeEvent(this.time);
+}

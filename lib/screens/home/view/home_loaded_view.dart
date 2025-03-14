@@ -8,7 +8,9 @@ import 'package:hydroinator/widgets/custom_app_bar.dart';
 
 class HomeLoadedView extends StatelessWidget {
   final List<Plant> plants;
-  const HomeLoadedView({super.key, required this.plants});
+  final TimeOfDay timeOfDay;
+  const HomeLoadedView(
+      {super.key, required this.plants, required this.timeOfDay});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class HomeLoadedView extends StatelessWidget {
               Column(children: [...plants.map((e) => PlantWidget(plant: e))]),
         ),
       ),
-      floatingActionButton: const AddFloatingButton(),
+      floatingActionButton: AddFloatingButton(timeOfDay: timeOfDay),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hydroinator/models/entities/plant_entity.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
@@ -35,20 +36,22 @@ class NotificationService {
         const NotificationDetails(android: androidPlatformChannelSpecifics);
   }
 
-  Future<void> scheduleNotifications(List<PlantEntity> plants) async {
+  Future<void> scheduleNotifications(
+      List<PlantEntity> plants, TimeOfDay? time) async {
+    time ??= const TimeOfDay(hour: 17, minute: 0);
     await flutterLocalNotificationsPlugin.cancelAll();
     for (var plant in plants) {
       if (plant.isAlive) {
         planNotifications(plants.indexOf(plant), plant.name, plant.startDate,
-            plant.dayInterval);
+            plant.dayInterval, time);
       }
     }
   }
 
   Future<void> planNotifications(int plantIndex, String plantName,
-      DateTime? startDate, int dayInterval) async {
+      DateTime? startDate, int dayInterval, TimeOfDay time) async {
     if (startDate == null) return;
-    DateTime date = _calculateInitialDate(startDate, dayInterval);
+    DateTime date = _calculateInitialDate(startDate, dayInterval, time);
     int index = plantIndex * 1000;
     while (date.isBefore(DateTime.now().add(const Duration(days: 365)))) {
       await flutterLocalNotificationsPlugin.zonedSchedule(
@@ -64,13 +67,16 @@ class NotificationService {
     }
   }
 
-  DateTime _calculateInitialDate(DateTime? startDate, int dayInterval) {
-    DateTime next = startDate!;
+  DateTime _calculateInitialDate(
+      DateTime? startDate, int dayInterval, TimeOfDay time) {
+    DateTime next =
+        startDate!.add(Duration(hours: time.hour, minutes: time.minute));
     final now = DateTime.now();
     while (next.isBefore(now)) {
+      var x = 2;
       next = next.add(Duration(days: dayInterval));
     }
-    next = next.add(const Duration(hours: 17));
+    // next = next.add(Duration(hours: time.hour, minutes: time.minute));
     return next;
   }
 }

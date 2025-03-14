@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hydroinator/config/routes.dart';
 import 'package:hydroinator/screens/home/home_screen.dart';
-import 'package:hydroinator/services/database_service.dart';
+import 'package:hydroinator/services/db/database_service.dart';
 import 'package:hydroinator/services/locator.dart';
 import 'package:hydroinator/services/notification_service.dart';
 

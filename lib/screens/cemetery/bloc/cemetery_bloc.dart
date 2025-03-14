@@ -2,13 +2,13 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hydroinator/models/entities/plant_entity.dart';
 import 'package:hydroinator/models/plant.dart';
-import 'package:hydroinator/services/database_service.dart';
+import 'package:hydroinator/services/db/plant_db.dart';
 
 part 'cemetery_event.dart';
 part 'cemetery_state.dart';
 
 class CemeteryBloc extends Bloc<CemeteryEvent, CemeteryState> {
-  final DatabaseService databaseService;
+  final PlantDb databaseService;
   CemeteryBloc({required this.databaseService}) : super(const CemeteryState()) {
     on<LoadCemeteryEvent>(_onLoad);
   }
