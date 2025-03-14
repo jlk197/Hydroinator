@@ -73,10 +73,8 @@ class NotificationService {
         startDate!.add(Duration(hours: time.hour, minutes: time.minute));
     final now = DateTime.now();
     while (next.isBefore(now)) {
-      var x = 2;
       next = next.add(Duration(days: dayInterval));
     }
-    // next = next.add(Duration(hours: time.hour, minutes: time.minute));
     return next;
   }
 }
