@@ -24,3 +24,5 @@ class ChangeNotificationsTimeEvent extends HomeEvent {
   final TimeOfDay time;
   const ChangeNotificationsTimeEvent(this.time);
 }
+
+class LogoutEvent extends HomeEvent {}

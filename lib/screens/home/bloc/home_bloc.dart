@@ -7,6 +7,7 @@ import 'package:hydroinator/models/entities/user_settings_entity.dart';
 import 'package:hydroinator/models/plant.dart';
 import 'package:hydroinator/services/db/plant_db.dart';
 import 'package:hydroinator/services/db/user_settings_db.dart';
+import 'package:hydroinator/services/firebase/auth_service.dart';
 import 'package:hydroinator/services/notification_service.dart';
 
 part 'home_event.dart';
@@ -16,16 +17,19 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final PlantDb databaseService;
   final UserSettingsDb userSettingsDb;
   final NotificationService notificationService;
+  final AuthService authService;
 
   HomeBloc(
       {required this.databaseService,
       required this.notificationService,
-      required this.userSettingsDb})
+      required this.userSettingsDb,
+      required this.authService})
       : super(const HomeState()) {
     on<InitDataEvent>(_initData);
     on<AddPhotoEvent>(_addPhoto);
     on<AssignAsDeadEvent>(_assignAsDead);
     on<ChangeNotificationsTimeEvent>(_changeNotificationsTime);
+    on<LogoutEvent>(_logout);
   }
 
   Future<void> _initData(
@@ -94,5 +98,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     var dbPlants = await databaseService.getAlivePlants();
     await notificationService.scheduleNotifications(dbPlants, event.time);
+  }
+
+  Future<void> _logout(LogoutEvent event, Emitter<HomeState> emitter) async {
+    await notificationService.cancelAllNotifications();
+    await authService.logout();
   }
 }

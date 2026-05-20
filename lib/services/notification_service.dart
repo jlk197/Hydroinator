@@ -36,6 +36,10 @@ class NotificationService {
         const NotificationDetails(android: androidPlatformChannelSpecifics);
   }
 
+  Future<void> cancelAllNotifications() async {
+    await flutterLocalNotificationsPlugin.cancelAll();
+  }
+
   Future<void> scheduleNotifications(
       List<PlantEntity> plants, TimeOfDay? time) async {
     time ??= const TimeOfDay(hour: 17, minute: 0);

@@ -6,12 +6,13 @@ class CustomAppBar extends AppBar {
   final bool showBackButton;
   final bool showActions;
   final void Function()? onAction;
+  final void Function()? onlogout;
   CustomAppBar(
       {super.key,
       required String title,
       this.showBackButton = true,
       this.showActions = false,
-      this.onAction})
+      this.onAction, this.onlogout})
       : super(
             centerTitle: true,
             automaticallyImplyLeading: showBackButton,
@@ -31,7 +32,16 @@ class CustomAppBar extends AppBar {
                             Icons.local_hospital_outlined,
                             size: 30,
                           ),
-                        ))
+                        ),),
+                        GestureDetector(
+                        onTap: onlogout,
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Icon(
+                            Icons.logout,
+                            size: 30,
+                          ),
+                        ),),
                   ]
                 : []);
 }
