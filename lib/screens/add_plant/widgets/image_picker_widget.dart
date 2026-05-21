@@ -3,18 +3,19 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hydroinator/config/app_colors.dart';
 import 'package:hydroinator/config/app_strings.dart';
-import 'package:hydroinator/models/entities/image_entity.dart';
 import 'package:hydroinator/screens/add_plant/widgets/validation_field.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImagePickerWidget extends StatefulWidget {
   final bool isEnable;
-  final List<ImageEntity> images;
-  final void Function(String) onChanged;
+  final File? image;
+  final String? imageUrl;
+  final void Function(File) onChanged;
   const ImagePickerWidget(
       {super.key,
       required this.onChanged,
-      required this.images,
+      required this.image,
+      required this.imageUrl,
       required this.isEnable});
 
   @override
@@ -26,7 +27,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
   Widget build(BuildContext context) {
     return FormField<bool>(
       validator: (value) {
-        if (widget.images.isEmpty) {
+        if (widget.image == null && widget.imageUrl == null) {
           return AppStrings.required;
         }
         return null;
@@ -43,17 +44,22 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
                   borderRadius: BorderRadius.circular(25),
                   border: Border.all(
                       color: field.hasError ? Colors.red : Colors.black)),
-              child: widget.images.isEmpty
+              child: widget.image == null && widget.imageUrl == null
                   ? const Icon(
                       Icons.photo_camera,
                       size: 50,
                     )
                   : ClipRRect(
                       borderRadius: BorderRadius.circular(25),
-                      child: Image.file(
-                        File(widget.images.last.image),
-                        fit: BoxFit.fitHeight,
-                      ),
+                      child: widget.imageUrl != null
+                          ? Image.network(
+                              widget.imageUrl!,
+                              fit: BoxFit.fitHeight,
+                            )
+                          : Image.file(
+                              widget.image!,
+                              fit: BoxFit.fitHeight,
+                            ),
                     ),
             ),
           ),
@@ -69,8 +75,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
     final pickedFile = await picker.pickImage(source: ImageSource.camera);
 
     if (pickedFile != null) {
-      File file = File(pickedFile.path);
-      widget.onChanged(file.path);
+      widget.onChanged(File(pickedFile.path));
     } else {
       print("BŁĄD PODCZAS WYKONYWANIA ZDJĘCIA");
     }

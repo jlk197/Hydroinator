@@ -1,8 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydroinator/config/app_strings.dart';
-import 'package:hydroinator/models/entities/image_entity.dart';
-import 'package:hydroinator/models/entities/plant_entity.dart';
+import 'package:hydroinator/models/plant.dart';
 import 'package:hydroinator/screens/add_plant/bloc/add_plant_bloc.dart';
 import 'package:hydroinator/screens/add_plant/widgets/date_picker.dart';
 import 'package:hydroinator/screens/add_plant/widgets/days_widget.dart';
@@ -21,16 +22,17 @@ class AddPlantScreen extends StatefulWidget {
 }
 
 class _AddPlantScreenState extends State<AddPlantScreen> {
-  PlantEntity plant = PlantEntity.empty();
+  Plant plant = Plant.empty();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool isEdited = false;
+  File? imageFile;
 
   @override
   void didChangeDependencies() {
     var mRoute = ModalRoute.of(context);
     if (mRoute != null) {
       var args = mRoute.settings.arguments;
-      if (args != null && args is PlantEntity) {
+      if (args != null && args is Plant) {
         plant = args;
         isEdited = true;
       }
@@ -67,12 +69,11 @@ class _AddPlantScreenState extends State<AddPlantScreen> {
                   children: [
                     ImagePickerWidget(
                       isEnable: !isEdited,
-                      images: plant.imagesFiles,
+                      image: imageFile,
+                      imageUrl: plant.imagesFiles.isNotEmpty ? plant.imagesFiles.first.image : null,
                       onChanged: (img) {
                         setState(() {
-                          plant.imagesFiles = [
-                            ImageEntity(image: img, dateTime: DateTime.now())
-                          ];
+                          imageFile = img;
                         });
                       },
                     ),
@@ -106,8 +107,9 @@ class _AddPlantScreenState extends State<AddPlantScreen> {
                       onTap: () {
                         var currentState = _formKey.currentState;
                         if (currentState?.validate() ?? false) {
-                          context.read<AddPlantBloc>().add(AddPlant(plant));
-                          Navigator.pop(context);
+                          context
+                              .read<AddPlantBloc>()
+                              .add(AddPlant(plant, imageFile, isEdit: isEdited));
                         }
                       },
                     ),

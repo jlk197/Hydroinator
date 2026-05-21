@@ -1,13 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hydroinator/config/app_config.dart';
 import 'package:hydroinator/config/app_typography.dart';
-import 'package:hydroinator/models/entities/image_entity.dart';
+import 'package:hydroinator/models/image.dart';
 
 class CarouselItem extends StatelessWidget {
-  final ImageEntity image;
+  final ImageData image;
   const CarouselItem({super.key, required this.image});
 
   @override

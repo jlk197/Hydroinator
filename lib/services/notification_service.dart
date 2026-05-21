@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:hydroinator/models/entities/plant_entity.dart';
+import 'package:hydroinator/models/plant.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -41,7 +41,7 @@ class NotificationService {
   }
 
   Future<void> scheduleNotifications(
-      List<PlantEntity> plants, TimeOfDay? time) async {
+      List<Plant> plants, TimeOfDay? time) async {
     time ??= const TimeOfDay(hour: 17, minute: 0);
     await flutterLocalNotificationsPlugin.cancelAll();
     for (var plant in plants) {

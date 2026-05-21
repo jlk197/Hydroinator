@@ -22,7 +22,7 @@ class PlantInfo extends StatelessWidget {
             Text.rich(
               TextSpan(text: "${AppStrings.watering} ", children: [
                 TextSpan(
-                  text: plant.dayIntervalString,
+                  text: plant.wateringIntervalString,
                   style: AppTypography.defaultBoldStyle,
                 )
               ]),
@@ -36,7 +36,7 @@ class PlantInfo extends StatelessWidget {
               overflow: TextOverflow.clip,
               TextSpan(text: AppStrings.nextWatering, children: [
                 TextSpan(
-                  text: plant.nextWatering,
+                  text: plant.nextWateringString,
                   style: AppTypography.defaultBoldStyle,
                 )
               ]),

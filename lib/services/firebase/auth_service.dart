@@ -20,4 +20,10 @@ class AuthService {
   Future<void> logout() async {
     await FirebaseAuth.instance.signOut();
   }
+
+  String get currentUserId {
+    final user = auth.currentUser;
+    if (user == null) throw StateError('No authenticated user');
+    return user.uid;
+  }
 }

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hydroinator/screens/home/bloc/home_bloc.dart';
 import 'package:hydroinator/screens/home/home_screen.dart';
 import 'package:hydroinator/screens/splash/splash_screen.dart';
+import 'package:hydroinator/services/locator.dart';
 
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});
@@ -16,7 +19,10 @@ class AuthGate extends StatelessWidget {
         }
 
         if (snapshot.hasData) {
-          return const HomeScreen();
+          return BlocProvider.value(
+            value: locator.get<HomeBloc>()..add(InitDataEvent()),
+            child: const HomeScreen(),
+          );
         } else {
           return const SplashScreen();
         }

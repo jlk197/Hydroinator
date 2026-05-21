@@ -1,19 +1,31 @@
 
 import 'dart:io';
-
-import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class FirebaseStorageService {
-  final storage = FirebaseStorage.instance;
+  Future<String> uploadImage(File file) async {
+  final uri = Uri.parse(
+    'https://api.cloudinary.com/v1_1/dblnarvbh/image/upload',
+  );
 
-  Future<String?> uploadImage(String filePath) async {
-    final file = File(filePath);
-    final ref = storage.ref().child(
-      'plants/${DateTime.now().millisecondsSinceEpoch}.jpg',
-    );
+  final request = http.MultipartRequest('POST', uri);
 
-    await ref.putFile(file);
-    final url = await ref.getDownloadURL();
-    return url;
-  }
+  request.fields['upload_preset'] = 'ml_default';
+
+  request.files.add(
+    await http.MultipartFile.fromPath(
+      'file',
+      file.path,
+    ),
+  );
+
+  final response = await request.send();
+
+  final data = jsonDecode(
+    await response.stream.bytesToString(),
+  );
+
+  return data['secure_url'];
+}
 }

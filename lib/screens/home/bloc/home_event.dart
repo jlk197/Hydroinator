@@ -10,7 +10,7 @@ sealed class HomeEvent extends Equatable {
 class InitDataEvent extends HomeEvent {}
 
 class AddPhotoEvent extends HomeEvent {
-  final String photo;
+  final File photo;
   final int plantId;
   const AddPhotoEvent(this.photo, this.plantId);
 }

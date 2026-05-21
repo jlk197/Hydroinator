@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         BlocProvider.value(
-          value: locator.get<HomeBloc>()..add(InitDataEvent())
+          value: locator.get<HomeBloc>(),
         ),
       ],
       child: MaterialApp(

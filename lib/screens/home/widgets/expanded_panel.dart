@@ -41,7 +41,7 @@ class ExpandedPanel extends StatelessWidget {
                         text: AppStrings.edit,
                         onClick: () {
                           Navigator.pushNamed(context, AddPlantScreen.route,
-                              arguments: plant.toPlantEntity());
+                              arguments: plant);
                         },
                       ),
                       MyIconButton(
@@ -64,7 +64,7 @@ class ExpandedPanel extends StatelessWidget {
 
     if (pickedFile != null) {
       File file = File(pickedFile.path);
-      context.read<HomeBloc>().add(AddPhotoEvent(file.path, plant.id));
+      context.read<HomeBloc>().add(AddPhotoEvent(file, plant.id));
     } else {
       print("BŁĄD PODCZAS WYKONYWANIA ZDJĘCIA");
     }
