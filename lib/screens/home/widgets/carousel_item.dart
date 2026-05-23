@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hydroinator/config/app_config.dart';
 import 'package:hydroinator/config/app_typography.dart';
@@ -24,7 +23,7 @@ class CarouselItem extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(25),
             image: DecorationImage(
-              image: FileImage(File(image.image)),
+              image: CachedNetworkImageProvider(image.image),
               fit: BoxFit.cover,
             ),
           ),

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:hydroinator/models/image.dart';
@@ -55,12 +56,12 @@ class ImageContainer extends StatelessWidget {
                     Colors.grey,
                     BlendMode.saturation,
                   ),
-                  child: Image.network(
-                    images.last.image,
+                  child: CachedNetworkImage(
+                    imageUrl: images.last.image,
                   ),
                 )
-              : Image.network(
-                  images.last.image,
+              : CachedNetworkImage(
+                  imageUrl: images.last.image,
                 ),
         ),
       ),

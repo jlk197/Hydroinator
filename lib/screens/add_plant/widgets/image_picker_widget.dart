@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hydroinator/config/app_colors.dart';
 import 'package:hydroinator/config/app_strings.dart';
@@ -52,8 +53,8 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
                   : ClipRRect(
                       borderRadius: BorderRadius.circular(25),
                       child: widget.imageUrl != null
-                          ? Image.network(
-                              widget.imageUrl!,
+                          ? CachedNetworkImage(
+                              imageUrl: widget.imageUrl!,
                               fit: BoxFit.fitHeight,
                             )
                           : Image.file(
