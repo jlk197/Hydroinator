@@ -36,6 +36,23 @@ subprojects {
     }
 }
 
+// Workaround for isar_flutter_libs 3.1.0+1: it pins an older compileSdk, which
+// causes `android:attr/lStar not found` during resource linking because newer
+// androidx resources require API 31+. Force compileSdk to 34 for that plugin
+// via reflection to avoid touching AGP on the root classpath.
+subprojects {
+    afterEvaluate {
+        if (project.name != "isar_flutter_libs") return@afterEvaluate
+        val androidExt = extensions.findByName("android") ?: return@afterEvaluate
+        val setter = androidExt.javaClass.methods.firstOrNull {
+            it.name == "setCompileSdkVersion" &&
+                it.parameterTypes.size == 1 &&
+                it.parameterTypes[0] == Int::class.javaPrimitiveType
+        } ?: return@afterEvaluate
+        setter.invoke(androidExt, 34)
+    }
+}
+
 subprojects {
     project.evaluationDependsOn(":app")
 }

@@ -81,6 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       setState(() {});
                     },
                   ),
+                  const SizedBox(height: 16),
                   TextFormField(
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     controller: _passwordController,
