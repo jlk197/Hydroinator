@@ -20,4 +20,14 @@ class AppStrings {
   static const String cemetery = "Cmentarz";
   static const String congratulations = "Gratulacje!";
   static const String cemeteryEmpty = "Wszystkie twoje roślinki żyją";
+  static const String logIn = "Zaloguj się";
+  static const String signIn = "Zarejestruj się";
+  static const String logInText = "Podaj swoją nazwę użytkownika";
+  static const String signInText = "Podaj unikalną nazwę użytkownika, po której będziemy cię identyfikować";
+  static const String email = "Email";
+  static const String password = "Hasło";
+  static const String validationEmailEmpty = "Email nie może być pusty";
+  static const String validationEmailInvalid = "Nieprawidłowy format email";
+  static const String validationPasswordEmpty = "Hasło nie może być puste";
+  static const String validationPasswordLength = "Hasło musi mieć co najmniej 6 znaków";
 }

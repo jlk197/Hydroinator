@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "993252855283",
+    "project_id": "hydroinator",
+    "storage_bucket": "hydroinator.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:993252855283:android:9d6fbda2c5b1b6d95f9686",
+        "android_client_info": {
+          "package_name": "com.example.hydroinator"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0kiP4tsG9WXblg-9tR5cWt5wzpQ4bFH0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

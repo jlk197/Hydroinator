@@ -1,12 +1,11 @@
-import 'dart:io';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:hydroinator/models/entities/image_entity.dart';
+import 'package:hydroinator/models/image.dart';
 import 'package:hydroinator/screens/home/widgets/carousel_item.dart';
 
 class ImageContainer extends StatelessWidget {
-  final List<ImageEntity> images;
+  final List<ImageData> images;
   final bool showGrey;
   const ImageContainer(
       {super.key, required this.images, this.showGrey = false});
@@ -57,16 +56,12 @@ class ImageContainer extends StatelessWidget {
                     Colors.grey,
                     BlendMode.saturation,
                   ),
-                  child: Image.file(
-                    File(
-                      images.last.image,
-                    ),
+                  child: CachedNetworkImage(
+                    imageUrl: images.last.image,
                   ),
                 )
-              : Image.file(
-                  File(
-                    images.last.image,
-                  ),
+              : CachedNetworkImage(
+                  imageUrl: images.last.image,
                 ),
         ),
       ),

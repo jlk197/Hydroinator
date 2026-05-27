@@ -1,13 +1,11 @@
-import 'dart:io';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hydroinator/config/app_config.dart';
 import 'package:hydroinator/config/app_typography.dart';
-import 'package:hydroinator/models/entities/image_entity.dart';
+import 'package:hydroinator/models/image.dart';
 
 class CarouselItem extends StatelessWidget {
-  final ImageEntity image;
+  final ImageData image;
   const CarouselItem({super.key, required this.image});
 
   @override
@@ -25,7 +23,7 @@ class CarouselItem extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(25),
             image: DecorationImage(
-              image: FileImage(File(image.image)),
+              image: CachedNetworkImageProvider(image.image),
               fit: BoxFit.cover,
             ),
           ),

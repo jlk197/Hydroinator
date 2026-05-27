@@ -6,8 +6,13 @@ import 'package:hydroinator/screens/cemetery/bloc/cemetery_bloc.dart';
 import 'package:hydroinator/screens/cemetery/cemetery_screen.dart';
 import 'package:hydroinator/screens/home/bloc/home_bloc.dart';
 import 'package:hydroinator/screens/home/home_screen.dart';
-import 'package:hydroinator/services/db/plant_db.dart';
+import 'package:hydroinator/screens/login/bloc/login_bloc.dart';
+import 'package:hydroinator/screens/login/login_screen.dart';
+import 'package:hydroinator/screens/splash/splash_screen.dart';
 import 'package:hydroinator/services/db/user_settings_db.dart';
+import 'package:hydroinator/services/firebase/auth_service.dart';
+import 'package:hydroinator/services/firebase/firebase_storage_service.dart';
+import 'package:hydroinator/services/firebase/firestore_plant_service.dart';
 import 'package:hydroinator/services/locator.dart';
 import 'package:hydroinator/services/notification_service.dart';
 
@@ -18,7 +23,8 @@ Map<String, Widget Function(BuildContext)> routes = {
       ),
   AddPlantScreen.route: (ctx) => BlocProvider(
         create: (context) => AddPlantBloc(
-          databaseService: locator.get<PlantDb>(),
+          storageService: locator.get<FirebaseStorageService>(),
+          databaseService: locator.get<FirestorePlantService>(),
           userSettingsDb: locator.get<UserSettingsDb>(),
           notificationService: locator.get<NotificationService>(),
         ),
@@ -26,8 +32,15 @@ Map<String, Widget Function(BuildContext)> routes = {
       ),
   CemeteryScreen.route: (ctx) => BlocProvider(
         create: (context) => CemeteryBloc(
-          databaseService: locator.get<PlantDb>(),
+          databaseService: locator.get<FirestorePlantService>(),
         )..add(LoadCemeteryEvent()),
         child: const CemeteryScreen(),
+      ),
+  SplashScreen.route: (ctx) => const SplashScreen(),
+  LoginScreen.route: (ctx) => BlocProvider(
+        create: (context) => LoginBloc(
+          authService: locator.get<AuthService>(),
+        ),
+        child: const LoginScreen(),
       ),
 };

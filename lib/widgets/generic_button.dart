@@ -4,7 +4,8 @@ import 'package:hydroinator/config/app_typography.dart';
 class GenericButton extends StatelessWidget {
   final String title;
   final void Function() onTap;
-  const GenericButton({super.key, required this.title, required this.onTap});
+  final bool enabled;
+  const GenericButton({super.key, required this.title, required this.onTap, this.enabled = true});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class GenericButton extends StatelessWidget {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(32.0)),
         ),
-        onPressed: onTap,
+        onPressed: enabled ? onTap : null,
         child: Text(
           title,
           style: AppTypography.defaultStyle,

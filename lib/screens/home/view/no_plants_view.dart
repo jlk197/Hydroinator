@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydroinator/config/app_strings.dart';
 import 'package:hydroinator/config/app_typography.dart';
 import 'package:hydroinator/screens/cemetery/cemetery_screen.dart';
+import 'package:hydroinator/screens/home/bloc/home_bloc.dart';
 import 'package:hydroinator/screens/home/widgets/add_floating_button.dart';
 import 'package:hydroinator/widgets/custom_app_bar.dart';
 
@@ -17,6 +19,7 @@ class NoPlantsView extends StatelessWidget {
         title: AppStrings.collection,
         showActions: true,
         onAction: () => Navigator.pushNamed(context, CemeteryScreen.route),
+        onlogout: () => context.read<HomeBloc>().add(LogoutEvent()),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),

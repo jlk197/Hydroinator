@@ -1,11 +1,15 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:hydroinator/models/entities/plant_entity.dart';
+import 'package:hydroinator/models/plant.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 class NotificationService {
+  static const int _maxNotificationsPerPlant = 20;
+  static const int _maxTotalNotifications = 400;
+  static const int _maxScheduleHorizonDays = 365;
+
   late final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   late final NotificationDetails platformChannelSpecifics;
 
@@ -36,44 +40,90 @@ class NotificationService {
         const NotificationDetails(android: androidPlatformChannelSpecifics);
   }
 
+  Future<void> cancelAllNotifications() async {
+    await flutterLocalNotificationsPlugin.cancelAll();
+  }
+
   Future<void> scheduleNotifications(
-      List<PlantEntity> plants, TimeOfDay? time) async {
+      List<Plant> plants, TimeOfDay? time) async {
     time ??= const TimeOfDay(hour: 17, minute: 0);
     await flutterLocalNotificationsPlugin.cancelAll();
-    for (var plant in plants) {
-      if (plant.isAlive) {
-        planNotifications(plants.indexOf(plant), plant.name, plant.startDate,
-            plant.dayInterval, time);
-      }
+    int scheduled = 0;
+    for (var i = 0; i < plants.length; i++) {
+      final plant = plants[i];
+      if (!plant.isAlive) continue;
+      final remaining = _maxTotalNotifications - scheduled;
+      if (remaining <= 0) break;
+      scheduled += await planNotifications(
+          i, plant.name, plant.startDate, plant.dayInterval, time, remaining);
     }
   }
 
-  Future<void> planNotifications(int plantIndex, String plantName,
-      DateTime? startDate, int dayInterval, TimeOfDay time) async {
-    if (startDate == null) return;
-    DateTime date = _calculateInitialDate(startDate, dayInterval, time);
-    int index = plantIndex * 1000;
-    while (date.isBefore(DateTime.now().add(const Duration(days: 365)))) {
+  Future<int> planNotifications(int plantIndex, String plantName,
+      DateTime? startDate, int dayInterval, TimeOfDay time, int budget) async {
+    if (startDate == null || dayInterval <= 0 || budget <= 0) return 0;
+    final tz.TZDateTime initial =
+        _calculateInitialDate(startDate, dayInterval, time);
+    final int baseId = plantIndex * 1000;
+
+    if (dayInterval == 1) {
       await flutterLocalNotificationsPlugin.zonedSchedule(
-          index,
+        baseId,
+        'Podlej swoją roślinkę!',
+        '$plantName chce pić',
+        initial,
+        platformChannelSpecifics,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.wallClockTime,
+        matchDateTimeComponents: DateTimeComponents.time,
+      );
+      return 1;
+    }
+    if (dayInterval == 7) {
+      await flutterLocalNotificationsPlugin.zonedSchedule(
+        baseId,
+        'Podlej swoją roślinkę!',
+        '$plantName chce pić',
+        initial,
+        platformChannelSpecifics,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.wallClockTime,
+        matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
+      );
+      return 1;
+    }
+
+    final int perPlantCap = budget < _maxNotificationsPerPlant
+        ? budget
+        : _maxNotificationsPerPlant;
+    final tz.TZDateTime horizon = tz.TZDateTime.now(tz.local)
+        .add(const Duration(days: _maxScheduleHorizonDays));
+    tz.TZDateTime date = initial;
+    int count = 0;
+    while (count < perPlantCap && date.isBefore(horizon)) {
+      await flutterLocalNotificationsPlugin.zonedSchedule(
+          baseId + count,
           'Podlej swoją roślinkę!',
           '$plantName chce pić',
-          tz.TZDateTime.from(date, tz.local),
+          date,
           platformChannelSpecifics,
           uiLocalNotificationDateInterpretation:
               UILocalNotificationDateInterpretation.wallClockTime);
-      date = date.add(Duration(days: dayInterval));
-      index++;
+      date = tz.TZDateTime(tz.local, date.year, date.month,
+          date.day + dayInterval, time.hour, time.minute);
+      count++;
     }
+    return count;
   }
 
-  DateTime _calculateInitialDate(
+  tz.TZDateTime _calculateInitialDate(
       DateTime? startDate, int dayInterval, TimeOfDay time) {
-    DateTime next =
-        startDate!.add(Duration(hours: time.hour, minutes: time.minute));
-    final now = DateTime.now();
+    tz.TZDateTime next = tz.TZDateTime(tz.local, startDate!.year,
+        startDate.month, startDate.day, time.hour, time.minute);
+    final now = tz.TZDateTime.now(tz.local);
     while (next.isBefore(now)) {
-      next = next.add(Duration(days: dayInterval));
+      next = tz.TZDateTime(tz.local, next.year, next.month,
+          next.day + dayInterval, time.hour, time.minute);
     }
     return next;
   }
